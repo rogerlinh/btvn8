@@ -5,7 +5,6 @@ let form = document.querySelector("#input");
 form.onsubmit = (e) => {
   e.preventDefault();
   let city = form.city.value;
-  console.log(city);
   getData(city);
 };
 
@@ -14,14 +13,12 @@ let getData = async (a) => {
     let response = await axios.get(
       `https://api.openweathermap.org/data/2.5/weather?q=${a}&appid=${APIKEY}`
     );
-    console.log(response.data);
 
-    console.log(response.data.weather[0].main.toLowerCase());
     if (response.data.weather[0].main.toLowerCase() == "mist") {
       document.getElementById("picWeather").src = `${
         BASE_URL_WEATHER_ICON + "50d" + IMAGE_SIZE
       }`;
-      document.getElementById("condition").innerHTML = "Trời âm u";
+      document.getElementById("condition").innerHTML = "Trời nhiều sương mù";
     } else if (response.data.weather[0].main.toLowerCase() == "rain") {
       document.getElementById("picWeather").src = `${
         BASE_URL_WEATHER_ICON + "09d" + IMAGE_SIZE
@@ -48,6 +45,8 @@ let getData = async (a) => {
     let t = response.data.main.temp - 273;
     document.getElementById("temp").innerHTML =
       "Nhiệt độ: " + Math.ceil(t) + "o".sup() + "C";
+
+      form.city.value = ""
   } catch (err) {
     console.log(err);
     alert("Bạn nhập sai cmnr");
